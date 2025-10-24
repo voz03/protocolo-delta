@@ -1,8 +1,10 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 
-// IntroProtocoloDelta - React Version
-// Place delta_badge.png in public/ or serve at /delta_badge.png
+// IntroProtocoloDelta - React Version (corrigido)
+// Badge image embedded as data URI to avoid file path errors.
+
+const BADGE_DATA_URI = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAB9AAAAfQCAYAAACaOM...CAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAA";
 
 const PILOTOS = [
   "01 - Marcel Di'marolla",
@@ -20,17 +22,18 @@ const PILOTOS = [
   "13 - Bell Di'marolla",
   '14 - Rodrigo Versone',
   '15 - Geras Ares',
-  '16 - Luan Balakov',
+  '16 - Luan Balakov'
 ]
 
-export default function IntroProtocoloDelta({ showSeconds = 8 }: { showSeconds?: number }) {
+export default function IntroProtocoloDelta({ showSeconds = 8 }) {
   const [visibleCount, setVisibleCount] = React.useState(0)
   const finalState = visibleCount > PILOTOS.length
 
+  // generate speed lines once
   const speedLines = React.useMemo(() => {
     return Array.from({ length: 18 }).map((_, i) => ({
       id: i,
-      left: f`${Math.round(Math.random() * 100)}%`,
+      left: `${Math.round(Math.random() * 100)}%`,
       dur: 1 + Math.random() * 1.6,
       delay: Math.random() * 1.2,
       opacity: 0.12 + Math.random() * 0.18,
@@ -39,7 +42,7 @@ export default function IntroProtocoloDelta({ showSeconds = 8 }: { showSeconds?:
 
   React.useEffect(() => {
     let mounted = true
-    let t: any = null
+    let t = 0
 
     t = window.setTimeout(function showNext() {
       setVisibleCount((c) => {
@@ -47,6 +50,7 @@ export default function IntroProtocoloDelta({ showSeconds = 8 }: { showSeconds?:
         if (next < PILOTOS.length) {
           t = window.setTimeout(showNext, 380)
         } else {
+          // trigger final reveal after short delay
           window.setTimeout(() => setVisibleCount((c) => c + 1), 500)
         }
         return next
@@ -55,11 +59,12 @@ export default function IntroProtocoloDelta({ showSeconds = 8 }: { showSeconds?:
 
     return () => {
       mounted = false
-      if (t) window.clearTimeout(t)
+      window.clearTimeout(t)
     }
   }, [])
 
-  const styles: any = {
+  // basic styles (kept inline so no external deps are required)
+  const styles = {
     root: {
       width: '100%',
       height: '100vh',
@@ -67,23 +72,23 @@ export default function IntroProtocoloDelta({ showSeconds = 8 }: { showSeconds?:
       color: '#7AFF00',
       fontFamily: "'Segoe UI', Roboto, Arial, sans-serif",
       overflow: 'hidden',
-      position: 'relative' as const,
+      position: 'relative',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
     },
-    header: { position: 'absolute' as const, top: 18, left: '50%', transform: 'translateX(-50%)', zIndex: 40, textAlign: 'center' as const },
+    header: { position: 'absolute', top: 18, left: '50%', transform: 'translateX(-50%)', zIndex: 40, textAlign: 'center' },
     pmBox: { width: 40, height: 40, borderRadius: 6, background: 'rgba(6,70,40,0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid rgba(80,200,120,0.08)' },
     title: { fontSize: 34, fontWeight: 800, letterSpacing: -0.5, zIndex: 30, display: 'flex', alignItems: 'center', gap: 12 },
     subtitle: { fontSize: 12, color: 'rgba(190,255,170,0.9)', marginTop: 6 },
     panel: { width: 'min(920px,88%)', padding: 18, borderRadius: 10, background: 'rgba(0,0,0,0.55)', border: '1px solid rgba(30,90,50,0.1)', zIndex: 30 },
-    listBox: { marginTop: 12, padding: 10, borderRadius: 8, background: 'rgba(0,0,0,0.45)', border: '1px solid rgba(12,50,30,0.08)', maxHeight: 220, overflow: 'hidden' },
+    listBox: { marginTop: 12, padding: 10, borderRadius: 8, background: 'rgba(0,0,0,0.45)', border: '1px solid rgba(12,50,30,0.08)', height: 360, maxHeight: 360, overflow: 'hidden' },
     listItem: { display: 'flex', justifyContent: 'space-between', padding: '6px 8px', borderBottom: '1px solid rgba(8,40,26,0.06)' },
-    badgeWrap: { position: 'absolute' as const, left: '50%', top: '50%', transform: 'translate(-50%,-50%)', zIndex: 50, display: 'flex', flexDirection: 'column' as const, alignItems: 'center', pointerEvents: 'none' as const },
+    badgeWrap: { position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%,-50%)', zIndex: 50, display: 'flex', flexDirection: 'column', alignItems: 'center', pointerEvents: 'none' },
     badgeImg: { width: 300, filter: 'drop-shadow(0 0 14px #7aff00)' },
     finalMsg: { marginTop: 12, color: '#bfffa0', fontWeight: 800, textShadow: '0 0 12px #7aff00' },
-    sirenLeft: { position: 'absolute' as const, top: 14, left: 14, width: 140, height: 8, borderRadius: 999, background: 'rgba(255,30,30,0.6)', boxShadow: '0 0 8px rgba(255,60,60,0.3)', animation: 'pulse 1s infinite' },
-    sirenRight: { position: 'absolute' as const, top: 14, right: 14, width: 140, height: 8, borderRadius: 999, background: 'rgba(40,80,255,0.55)', boxShadow: '0 0 8px rgba(50,100,255,0.25)', animation: 'pulse 1s infinite' },
+    sirenLeft: { position: 'absolute', top: 14, left: 14, width: 140, height: 8, borderRadius: 999, background: 'rgba(255,30,30,0.6)', boxShadow: '0 0 8px rgba(255,60,60,0.3)', animation: 'pulse 1s infinite' },
+    sirenRight: { position: 'absolute', top: 14, right: 14, width: 140, height: 8, borderRadius: 999, background: 'rgba(40,80,255,0.55)', boxShadow: '0 0 8px rgba(50,100,255,0.25)', animation: 'pulse 1s infinite' },
   }
 
   return (
@@ -93,9 +98,11 @@ export default function IntroProtocoloDelta({ showSeconds = 8 }: { showSeconds?:
         .speed-line { position:absolute; height:2px; background:linear-gradient(90deg, transparent, rgba(120,255,160,0.9), transparent); }
       `}</style>
 
+      {/* sirenes */}
       <div style={styles.sirenLeft} aria-hidden />
       <div style={styles.sirenRight} aria-hidden />
 
+      {/* speed lines */}
       {speedLines.map((s) => (
         <motion.div
           key={s.id}
@@ -107,6 +114,7 @@ export default function IntroProtocoloDelta({ showSeconds = 8 }: { showSeconds?:
         />
       ))}
 
+      {/* radar (SVG) placed behind content */}
       <div style={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%,-50%)', zIndex: 10, pointerEvents: 'none', opacity: finalState ? 0.06 : 0.14 }}>
         <svg width={420} height={420} viewBox="0 0 200 200">
           <defs>
@@ -128,6 +136,7 @@ export default function IntroProtocoloDelta({ showSeconds = 8 }: { showSeconds?:
         </svg>
       </div>
 
+      {/* header */}
       <header style={styles.header}>
         <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
           <div style={styles.pmBox}>PM</div>
@@ -138,6 +147,7 @@ export default function IntroProtocoloDelta({ showSeconds = 8 }: { showSeconds?:
         </div>
       </header>
 
+      {/* main content */}
       <main style={{ zIndex: 30, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <div style={styles.title}>
           <div style={{ fontSize: 28, fontWeight: 900, background: 'linear-gradient(90deg,#cfffbe,#eaffd2)', WebkitBackgroundClip: 'text', color: 'transparent' }}>INICIANDO</div>
@@ -168,12 +178,15 @@ export default function IntroProtocoloDelta({ showSeconds = 8 }: { showSeconds?:
         </div>
       </main>
 
+      {/* final badge (revealed only at the end) */}
       <motion.div style={styles.badgeWrap} initial={{ opacity: 0, scale: 0.9 }} animate={finalState ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }} transition={{ duration: 0.9 }}>
-        <img src="/delta_badge.png" alt="Unidade Delta" style={styles.badgeImg} />
+        <img src={BADGE_DATA_URI} alt="Unidade Delta" style={styles.badgeImg} />
         <div style={styles.finalMsg}>PROTOCOLO DELTA ATIVO ✅</div>
       </motion.div>
 
+      {/* footer */}
       <div style={{ position: 'absolute', bottom: 12, left: '50%', transform: 'translateX(-50%)', fontSize: 12, color: 'rgba(150,220,150,0.35)' }}>UNIDADE DELTA • SISTEMA DE RASTREAMENTO</div>
     </div>
   )
 }
+

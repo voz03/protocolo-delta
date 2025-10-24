@@ -1,129 +1,25 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Protocolo Delta</title>
-<style>
-    body {
-        margin: 0;
-        padding: 0;
-        background: black;
-        color: #7AFF00;
-        font-family: 'Arial Black', sans-serif;
-        overflow: hidden;
-        text-shadow: 0 0 6px #4aff00;
-    }
-
-    #container {
-        width: 100vw;
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        gap: 20px;
-    }
-
-    #titulo {
-        font-size: 30px;
-        opacity: 0;
-        animation: piscar 1s infinite;
-    }
-
-    @keyframes piscar {
-        0% { opacity: 1; }
-        50% { opacity: 0.2; }
-        100% { opacity: 1; }
-    }
-
-    .nome-item {
-        font-size: 22px;
-        opacity: 0;
-        display: flex;
-        justify-content: space-between;
-        width: 450px;
-    }
-
-    .ok {
-        color: #00ff62;
-    }
-
-    #badge {
-        width: 350px;
-        opacity: 0;
-        filter: drop-shadow(0 0 12px #7AFF00);
-        transition: opacity 1.5s ease-in-out;
-    }
-
-    #final-msg {
-        font-size: 38px;
-        opacity: 0;
-        margin-top: 20px;
-        text-shadow: 0 0 10px #7AFF00;
-    }
-</style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Voz Di'marolla - Twitch</title>
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Shadcn + Lucide (Mock CDN for preview) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Framer Motion -->
+    <script src="https://cdn.jsdelivr.net/npm/framer-motion/dist/framer-motion.umd.js"></script>
 </head>
-<body>
-
-<div id="container">
-    <div id="titulo">Iniciando Protocolo Delta...</div>
-    <div id="lista"></div>
-    <img id="badge" src="delta_badge.png" alt="Unidade Delta">
-    <div id="final-msg">PROTOCOLO DELTA ATIVO ✅</div>
-</div>
-
-<script>
-const pilotos = [
-    "01 - Marcel Di'marolla",
-    "02 - Dean Cavalcante",
-    "03 - Denver Gucci",
-    "04 - Guilherme F",
-    "05 - Lorena Lovatelli",
-    "06 - Luck Davies",
-    "07 - Marco Selinger",
-    "08 - Rodrigo Di'marolla",
-    "09 - Jhony Bravo",
-    "10 - Anthony Leal",
-    "11 - Vitor Barbosa",
-    "12 - Victor Salazar",
-    "13 - Bell Di'marolla",
-    "14 - Rodrigo Versone",
-    "15 - Geras Ares",
-    "16 - Luan Balakov"
-];
-
-let index = 0;
-const listaDiv = document.getElementById("lista");
-const badge = document.getElementById("badge");
-const finalMsg = document.getElementById("final-msg");
-
-function mostrarPiloto() {
-    if (index < pilotos.length) {
-        const linha = document.createElement("div");
-        linha.classList.add("nome-item");
-        linha.innerHTML = `${pilotos[index]} <span class='ok'>OK ✅</span>`;
-        listaDiv.appendChild(linha);
-
-        setTimeout(() => {
-            linha.style.opacity = 1;
-        }, 100);
-
-        index++;
-        setTimeout(mostrarPiloto, 400);
-    } else {
-        setTimeout(exibirFinal, 500);
-    }
-}
-
-function exibirFinal() {
-    listaDiv.style.opacity = 0;
-    badge.style.opacity = 1;
-    setTimeout(() => finalMsg.style.opacity = 1, 1500);
-}
-
-setTimeout(mostrarPiloto, 1500);
-</script>
-
+<body class="bg-gray-900 text-white flex items-center justify-center min-h-screen">
+    <main class="text-center p-8">
+        <h1 class="text-4xl font-bold text-blue-500 mb-4">Voz Di'marolla</h1>
+        <p class="text-lg">Página inicial em construção para o canal da Twitch!</p>
+        <p class="mt-2 text-sm opacity-60">Feito com animações e estilo urbano.</p>
+    </main>
+    <script>
+        lucide.createIcons();
+    </script>
 </body>
 </html>
+
